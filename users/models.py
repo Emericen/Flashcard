@@ -21,9 +21,9 @@ class Profile(models.Model):
 
 
 class Ownership(models.Model):
-	Owner = models.ForeignKey(User, on_delete=models.CASCADE)
-	Flashcard = models.ForeignKey(Flashcard, on_delete=models.CASCADE)
-	date_joined = models.DateTimeField(default=timezone.now)
+	profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+	flashcard = models.ForeignKey(Flashcard, on_delete=models.CASCADE)
+	date_added = models.DateTimeField(default=timezone.now)
 
 	def __str__(self):
 		return '(' + Owner + ',' + Flashcard + ')'
