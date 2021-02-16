@@ -7,6 +7,13 @@ from .forms import UserRegisterForm
 
 
 
+def home(request):
+	if request.user.is_authenticated():
+		pass
+	else:
+		return redirect('login')
+
+
 
 def register(request):
 	if request.method == 'POST':
@@ -19,8 +26,5 @@ def register(request):
 	else:
 		form = UserRegisterForm()
 	return render(request, 'users/register.html', {'form':form})
-
-
-
 
 
