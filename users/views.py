@@ -8,10 +8,10 @@ from .forms import UserRegisterForm
 
 
 def home(request):
-	if request.user.is_authenticated():
-		pass
-	else:
+	if not request.user.is_authenticated():
 		return redirect('login')
+	else:
+		return render(request, 'users/home.html')
 
 
 
