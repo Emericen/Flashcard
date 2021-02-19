@@ -27,5 +27,5 @@ def register(request):
 		form = UserRegisterForm(initial={'area_code': '+86'})
 	return render(request, 'users/register.html', {'form':form})
 
-
+# eddddddddy 
 
