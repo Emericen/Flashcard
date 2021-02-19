@@ -5,8 +5,8 @@ from django.contrib.auth.forms import UserCreationForm
 
 AREA_CODE = (
     # ('', '请选择'),
-    ('+86', '中国大陆(+86)'),
-    ('+1', '美国(+1)'),
+    ('+86', '中国大陆'),
+    ('+1', '美国'),
 )
 
 
@@ -21,7 +21,19 @@ class UserRegisterForm(UserCreationForm):
         'password_mismatch': "请输入相同密码",
     }
 	
-	area_code = forms.ChoiceField(choices=AREA_CODE)
+	area_code = forms.ChoiceField(
+		choices=AREA_CODE, 
+		label='区域'
+	)
+
+	phone = forms.CharField(
+		required=True, 
+		label='手机号', 
+		error_messages={
+			'required':'请填写常用手机号'
+		}
+	)
+
 
 	password1 = forms.CharField(
 		strip=False,
@@ -43,12 +55,17 @@ class UserRegisterForm(UserCreationForm):
 
 
 
+
+
 	class Meta:
 		model = User
 		fields = ['area_code','phone', 'password1']
-		labels = {
-			'phone': '手机号',
-		}
+
+
+
+		# labels = {
+		# 	'phone': '手机号',
+		# }
 		# help_texts = {
 		# 	'phone':'别tm输空号！待会要验证！'
 		# }

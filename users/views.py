@@ -24,7 +24,7 @@ def register(request):
 			messages.success(request, f'Your account has been created! You can now log in!')
 			return redirect('login')
 	else:
-		form = UserRegisterForm()
+		form = UserRegisterForm(initial={'area_code': '+86'})
 	return render(request, 'users/register.html', {'form':form})
 
 

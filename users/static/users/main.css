@@ -34,6 +34,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .authentication-section {
   position: fixed;
+  padding: 10px 20px;
   width: 500px;
   top: 50%;
   left: 50%;
@@ -93,7 +94,13 @@ a.article-title:hover {
   margin-bottom: 15px;
 }
 
-.authentication-panel-sizing {
+
+.button-primary {
+  background-color: #e35852 !important;
+  color: white !important;
+}
+
+/*.authentication-panel-sizing {
   position: fixed;
   width: 500px;
   top: 50%;
@@ -105,5 +112,5 @@ a.article-title:hover {
 .champion-card {
   width: 150px;
   /*height: 120px;*/
-}
+}*/
 
