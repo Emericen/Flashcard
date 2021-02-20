@@ -1,7 +1,11 @@
 {% extends "users/base.html" %}
 {% load crispy_forms_tags %}
+{% load widget_tweaks %}
+
+
+
 {% block content %}
-<div class="authentication-section">
+<!-- <div class="authentication-section">
 	<form method="POST" novalidate>
 		{% csrf_token %}
 		<fieldset class="form-group">
@@ -10,7 +14,7 @@
 				{{ form|crispy}}
 			</div>
 		</fieldset>
-		<div class="form-group">
+		<div class="form-group mb-4">
 			<button class="btn button-primary col-md-12" type="submit">登录</button>
 		</div>
 	</form>
@@ -19,7 +23,40 @@
 			第一次来本站？ <a class="ml-2" href="{% url 'register' %}">注册</a>
 		</small>
 	</div>
+</div> -->
+
+<div class="container">
+	<div class="row justify-content-center">
+		<div class="col-md-6">
+			<form method="POST" novalidate>
+				{% csrf_token %}
+				<fieldset class="form-group">
+					<legend class="border-bottom mb-4">登录</legend>
+					<div class="row">
+						<div class="form-group col-md-4 mb-0">
+							{{ form.area_code | add_class:"form-select" | as_crispy_field }}
+						</div>
+						<div class="form-group col-md-8 mb-0">
+							{{ form.phone | as_crispy_field }}
+						</div>
+					</div>
+					{{ form.password | as_crispy_field }}
+					<div class="row">
+						<div class="form-group mb-4">
+							<button class="btn button-primary col-md-6" type="submit">登录</button>
+						</div>
+						<div class="form-group mb-4">
+							<button class="btn button-secondary col-md-6" href="{% url 'register' %}">注册</button>
+						</div>
+					</div>
+				</fieldset>
+			</form>
+		</div>
+	</div>
 </div>
+
+
+
 {% endblock content %}
 
 

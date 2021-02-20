@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'crispy_forms',
+    'widget_tweaks',
     'flashcards.apps.FlashcardsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
