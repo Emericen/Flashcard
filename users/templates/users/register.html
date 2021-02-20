@@ -1,14 +1,20 @@
 {% extends "users/base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
-<dir class="authentication-section">
+
+
+<div class="authentication-section">
 	<form method="POST" novalidate>
 		{% csrf_token %}
 		<fieldset class="form-group">
 			<legend class="border-bottom mb-4">注册</legend>
 			<div class="row">
 				<div class="form-group col-md-4 mb-2">
-					{{form.area_code|as_crispy_field}}
+					<select class="form-select">
+						{% for value, text in form.area_code.field.choices %}
+							<option value="{{ value }}"> {{text}} </option>
+						{% endfor %}
+					</select>
 				</div>
 				<div class="form-group col-md-8 mb-2">
 					{{form.phone|as_crispy_field}}
@@ -30,5 +36,5 @@
 			已有账号? <a class="ml-2" href="{% url 'login' %}">登录</a>
 		</small>
 	</div>
-</dir>
+</div>
 {% endblock content %}

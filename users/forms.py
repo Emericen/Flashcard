@@ -7,19 +7,16 @@ AREA_CODE = (
     # ('', '请选择'),
     ('+86', '中国大陆'),
     ('+1', '美国'),
-)
-
-
-
-
+    # ('+12','乌干达')
+    )
 
 
 
 class UserRegisterForm(UserCreationForm):
 
 	error_messages = {
-        'password_mismatch': "请输入相同密码",
-    }
+		'password_mismatch': "请输入相同密码",
+	}
 	
 	area_code = forms.ChoiceField(
 		choices=AREA_CODE, 
@@ -30,17 +27,16 @@ class UserRegisterForm(UserCreationForm):
 		required=True, 
 		label='手机号', 
 		error_messages={
-			'required':'请填写常用手机号'
+		'required':'请填写常用手机号'
 		}
 	)
-
 
 	password1 = forms.CharField(
 		strip=False,
 		widget=forms.PasswordInput,
 		label='设置密码 (6-16个字符组成，区分大小写)',
 		error_messages={
-			'required':'密码不能为空'
+		'required':'密码不能为空'
 		}
 	)
 
@@ -49,13 +45,9 @@ class UserRegisterForm(UserCreationForm):
 		widget=forms.PasswordInput,
 		label='请再次输入密码',
 		error_messages={
-			'required':'确认密码不能为空'
+		'required':'确认密码不能为空'
 		}
 	)
-
-
-
-
 
 	class Meta:
 		model = User
@@ -63,16 +55,26 @@ class UserRegisterForm(UserCreationForm):
 
 
 
-		# labels = {
-		# 	'phone': '手机号',
-		# }
-		# help_texts = {
-		# 	'phone':'别tm输空号！待会要验证！'
-		# }
-		# error_message = {
-		# 	'username': {
-		# 	'max_length': _("This writer's name is too long."),
-		# 	},
-		# }
 
-		
+
+# class UserLoginForm(AuthenticationForm):
+# 	def __init__(self, *args, **kwargs):
+# 		super(UserLoginForm, self).__init__(*args, **kwargs)
+
+# 	area_code = forms.ChoiceField(
+# 		choices=AREA_CODE, 
+# 		label='区域'
+# 	)
+
+# 	phone = forms.CharField(
+# 		required=True, 
+# 		label='手机号', 
+# 		error_messages={
+# 			'required':'请填写常用手机号'
+# 		}
+# 	)
+
+
+
+
+
