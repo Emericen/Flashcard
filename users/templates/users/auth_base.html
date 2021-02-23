@@ -1,0 +1,16 @@
+{% extends "users/base.html" %}
+
+{% block content%}
+<main role="main" class="container">
+	<div class="container">
+		{% if messages %}
+			{% for message in messages %}
+				<div class="alert alert-{{ message.tags }}">
+					{{ message }}
+				</div>
+			{% endfor %}
+		{% endif %}
+		{% block auth_panel %}{% endblock %}
+	</div>
+</main>
+{% endblock content %}
