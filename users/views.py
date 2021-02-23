@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect
-# from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
+from django.contrib.auth.views import LoginView
 from django.contrib.auth.decorators import login_required
-from .forms import UserRegisterForm, UserLoginForm
-
-
+from django.contrib.auth import authenticate
+from .forms import UserCreationForm, UserLoginForm
+import sys
 
 
 def home(request):
@@ -17,21 +17,19 @@ def home(request):
 
 def register(request):
 	if request.method == 'POST':
-		form = UserRegisterForm(request.POST)
+		form = UserCreationForm(request.POST)
 		if form.is_valid():
-			form.save()		# create new entry in user table
-			username = form.cleaned_data.get('username')
-			messages.success(request, f'Your account has been created! You can now log in!')
+			form.save()
+			invitation_code = form.cleaned_data.get('invitation_code')
+			messages.success(request, f'您的账号已注册成功！您可以登陆了！')
 			return redirect('login')
 	else:
-		form = UserRegisterForm(initial={'area_code': '+86'})
+		form = UserCreationForm()
 	return render(request, 'users/register.html', {'form':form})
 
 
 
-
-def login(request):
-	return render(request, 'users/login.html')
-
+class Login(LoginView):
+	authentication_form = UserLoginForm
 
 

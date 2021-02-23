@@ -1,34 +1,33 @@
 from django import forms
-from .models import User
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.forms import AuthenticationForm
+from django.core.exceptions import ValidationError
 
-
-AREA_CODE = (
-    # ('', '请选择'),
-    ('+86', '中国大陆'),
-    ('+1', '美国'),
-    ('+12','乌干达')
-    )
+from .models import User, Invitation
+from django.contrib.auth.forms import UserCreationForm, ReadOnlyPasswordHashField
+from django.contrib.auth.forms import AuthenticationForm, UsernameField
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
 
 
-class UserRegisterForm(UserCreationForm):
+def validate_invitation_code(value):
+	if Invitation.objects.filter(invitation_code=value).first() == None:
+		raise ValidationError("抱歉，您的邀请码无效")
+	else:
+		return value
+
+
+
+class UserCreationForm(forms.ModelForm):
 
 	error_messages = {
 		'password_mismatch': "请输入相同密码",
 	}
-	
-	area_code = forms.ChoiceField(
-		choices=AREA_CODE, 
-		label='区域'
-	)
 
-	phone = forms.CharField(
-		required=True, 
-		label='手机号', 
+	invitation_code = forms.CharField(
+		required=True,
+		label='邀请码 (必填)',
+		validators=[validate_invitation_code],
 		error_messages={
-		'required':'请填写常用手机号'
+			'required':'请填写来自管理员的邀请码'
 		}
 	)
 
@@ -37,7 +36,7 @@ class UserRegisterForm(UserCreationForm):
 		widget=forms.PasswordInput,
 		label='设置密码 (6-16个字符组成，区分大小写)',
 		error_messages={
-		'required':'密码不能为空'
+			'required':'密码不能为空'
 		}
 	)
 
@@ -46,43 +45,114 @@ class UserRegisterForm(UserCreationForm):
 		widget=forms.PasswordInput,
 		label='请再次输入密码',
 		error_messages={
-		'required':'确认密码不能为空'
+			'required':'确认密码不能为空'
 		}
 	)
 
+
+	def clean_password1(self):
+		password1 = self.cleaned_data.get("password1")
+		if len(password1) < 6:
+			raise ValidationError("密码长度太短，请至少设置6位密码")
+		return password1
+
+
+	def clean_password2(self):
+		password1 = self.cleaned_data.get("password1")
+		password2 = self.cleaned_data.get("password2")
+		if password1 and password2 and password1 != password2:
+			raise ValidationError("二次输入密码必须和原密码相同")
+		return password2
+
+
+	def save(self, commit=True):
+		user = super().save(commit=False)
+		user.set_password(self.cleaned_data["password1"])
+		if commit:
+			user.save()
+		return user
+
+
 	class Meta:
 		model = User
-		fields = ['area_code','phone', 'password1']
+		fields = ['invitation_code', 'password1', 'password2']
 
 
 
 
 
 class UserLoginForm(AuthenticationForm):
-	def __init__(self, *args, **kwargs):
-		super(UserLoginForm, self).__init__(*args, **kwargs)
 
-	area_code = forms.ChoiceField(
-		choices=AREA_CODE, 
-		label='区域'
-	)
-
-	phone = forms.CharField(
-		required=True, 
-		label='手机号', 
+	username = UsernameField(
+		widget=forms.TextInput(attrs={'autofocus': True}),
+		label='邀请码',
 		error_messages={
-			'required':'请填写常用手机号'
+			'required':'请填写来自管理员的邀请码'
 		}
 	)
 
 	password = forms.CharField(
-		strip=False,
-		widget=forms.PasswordInput,
 		label='密码',
+		strip=False,
+		widget=forms.PasswordInput(attrs={'autocomplete': 'current-password'}),
 		error_messages={
-		'required':'密码不能为空'
+			'required':'密码不能为空'
 		}
 	)
+
+
+# 	username = forms.CharField(
+# 		required=True,
+# 		label='邀请码(必填)',
+# 		validators=[validate_invitation_code],
+# 		error_messages={
+# 			'required':'请填写来自管理员的邀请码'
+# 		}
+# 	)
+
+# 	password = forms.CharField(
+# 		strip=False,
+# 		widget=forms.PasswordInput,
+# 		label='密码',
+# 		error_messages={
+# 		'required':'密码不能为空'
+# 		}
+# 	)
+
+
+
+class UserChangeForm(forms.ModelForm):
+	password = ReadOnlyPasswordHashField()
+
+	class Meta:
+		model = User
+		fields = ('invitation_code','password')
+
+	def clean_password(self):
+		return self.initial["password"]
+
+
+
+class UserAdmin(BaseUserAdmin):
+	form = UserChangeForm
+	add_form = UserCreationForm
+	list_display = ('invitation_code', 'first_name', 'last_name', 'is_admin')
+	list_filter = ('is_admin',)
+	fieldsets = (
+		(None, {'fields': ('invitation_code', 'password')}),
+		('Personal info', {'fields': ('first_name', 'last_name')}),
+		('Permissions', {'fields': ('is_admin',)}),
+	)
+
+	add_fieldsets = (
+		(None, {
+			'classes': ('wide',),
+			'fields': ('invitation_code', 'first_name', 'last_name', 'password1', 'password2'),
+		}),
+	)
+	search_fields = ('invitation_code',)
+	ordering = ('invitation_code',)
+	filter_horizontal = ()
 
 
 

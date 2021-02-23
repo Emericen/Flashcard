@@ -1,5 +1,10 @@
 from django.contrib import admin
-# from .models import Profile
-from .models import User
+from .models import User, Invitation
+from django.contrib.auth.models import Group
+from.forms import UserAdmin
 
-admin.site.register(User)
+admin.site.register(User, UserAdmin)
+admin.site.register(Invitation)
+admin.site.unregister(Group)
+
+
