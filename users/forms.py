@@ -1,33 +1,27 @@
 from django import forms
 from django.core.exceptions import ValidationError
-
 from .models import User, Invitation
 from django.contrib.auth.forms import UserCreationForm, ReadOnlyPasswordHashField
 from django.contrib.auth.forms import AuthenticationForm, UsernameField
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-
-
+from django.utils.translation import gettext, gettext_lazy as _
+import sys
 
 def validate_invitation_code(value):
-	if Invitation.objects.filter(invitation_code=value).first() == None:
-		raise ValidationError("抱歉，您的邀请码无效")
-	else:
+	if not Invitation.objects.filter(invitation_code=value).first() == None:
 		return value
-
+	else:
+		raise ValidationError("抱歉，您的邀请码无效")
 
 
 class UserCreationForm(forms.ModelForm):
-
-	error_messages = {
-		'password_mismatch': "请输入相同密码",
-	}
-
 	invitation_code = forms.CharField(
 		required=True,
 		label='邀请码 (必填)',
 		validators=[validate_invitation_code],
 		error_messages={
-			'required':'请填写来自管理员的邀请码'
+			'required':'请填写来自管理员的邀请码',
+			'unique':'该邀请码已被其他用户使用'
 		}
 	)
 
@@ -68,6 +62,9 @@ class UserCreationForm(forms.ModelForm):
 	def save(self, commit=True):
 		user = super().save(commit=False)
 		user.set_password(self.cleaned_data["password1"])
+		invitation = Invitation.objects.get(invitation_code=self.cleaned_data["invitation_code"])
+		invitation.is_used = True
+		user.first_name, user.last_name = invitation.first_name, invitation.last_name
 		if commit:
 			user.save()
 		return user
@@ -83,11 +80,15 @@ class UserCreationForm(forms.ModelForm):
 
 class UserLoginForm(AuthenticationForm):
 
+	error_messages = {
+		'invalid_login': "邀请码或密码错误",
+	}
+
 	username = UsernameField(
 		widget=forms.TextInput(attrs={'autofocus': True}),
 		label='邀请码',
 		error_messages={
-			'required':'请填写来自管理员的邀请码'
+			'required':'请填写来自管理员的邀请码',
 		}
 	)
 
@@ -96,28 +97,9 @@ class UserLoginForm(AuthenticationForm):
 		strip=False,
 		widget=forms.PasswordInput(attrs={'autocomplete': 'current-password'}),
 		error_messages={
-			'required':'密码不能为空'
+			'required':'密码不能为空',
 		}
 	)
-
-
-# 	username = forms.CharField(
-# 		required=True,
-# 		label='邀请码(必填)',
-# 		validators=[validate_invitation_code],
-# 		error_messages={
-# 			'required':'请填写来自管理员的邀请码'
-# 		}
-# 	)
-
-# 	password = forms.CharField(
-# 		strip=False,
-# 		widget=forms.PasswordInput,
-# 		label='密码',
-# 		error_messages={
-# 		'required':'密码不能为空'
-# 		}
-# 	)
 
 
 

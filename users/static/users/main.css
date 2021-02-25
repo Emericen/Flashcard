@@ -1,3 +1,6 @@
+
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css");
+
 body {
   background: #fafafa;
   color: #333333;
@@ -100,17 +103,4 @@ a.article-title:hover {
   color: white !important;
 }
 
-/*.authentication-panel-sizing {
-  position: fixed;
-  width: 500px;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-
-.champion-card {
-  width: 150px;
-  /*height: 120px;*/
-}*/
 

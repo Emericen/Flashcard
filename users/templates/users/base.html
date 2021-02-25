@@ -12,13 +12,13 @@
 	<link rel="stylesheet" type="text/css" href="{% static 'users/main.css' %}">
 
 	{% if title %}
-		<title>Django Blog - {{ title }}</title>
+		<title>Flashcard - {{ title }}</title>
 	{% else %}
-		<title>Django Blog</title>
+		<title>Flashcard</title>
 	{% endif %}
 </head>
 <body>
-{% block content %}{% endblock %}
+	{% block content %}{% endblock %}
 </body>
 </html>
 

@@ -6,6 +6,9 @@ from django.contrib.auth import logout as django_logout
 from .forms import UserCreationForm, UserLoginForm
 import sys
 
+from django.forms.utils import ErrorList
+
+
 
 def home(request):
 	if not request.user.is_authenticated:
