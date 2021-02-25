@@ -19,12 +19,17 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from users import views as user_views
+from flashcards import views as flashcard_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', user_views.home, name='home'),
-    path('home/', user_views.home, name='home'),
+    path('', flashcard_views.home, name='home'),
+    path('home/', flashcard_views.home, name='home'),
     path('register/', user_views.register, name='register'),
     path('login/', user_views.Login.as_view(template_name='users/login.html'), name='login'),
     path('logout/', user_views.logout, name='logout'),
 ]
+
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
