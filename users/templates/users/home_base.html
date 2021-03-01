@@ -10,10 +10,23 @@
 					<p class="text-white">Add some information about the album below, the author, or any other background context. Make it a few sentences long so folks can pick up some informative tidbits. Then, link them off to some social networking sites or contact information.</p>
 				</div>
 				<div class="col-sm-4 offset-md-1 py-4">
-					<h4 class="text-white"><i class="bi-person-circle"></i>{{ user.last_name }}{{ user.first_name }}</h4>
-					<ul class="list-unstyled">
-						<li><a href="#" class="text-white">我的账户</a></li>
-						<li><a href="{% url 'logout' %}" class="text-white">退出登录</a></li>
+					<h4 class="text-white">
+						<i class="bi-person-circle"></i>
+						{{ user.last_name }}{{ user.first_name }}
+					</h4>
+					<ul class="nav flex-column">
+						<li class="nav-item">
+							<a class="nav-link" href="#" style="font-weight: 500;color: white;">
+								<span class="bi-person"></span>
+								个人中心
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="{% url 'logout' %}" style="font-weight: 500;color: white;">
+								<span class="bi-box-arrow-right"></span>
+								退出登录
+							</a>
+						</li>
 					</ul>
 				</div>
 			</div>
