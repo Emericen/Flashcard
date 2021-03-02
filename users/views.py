@@ -26,7 +26,7 @@ class Login(LoginView):
 
 def logout(request):
 	django_logout(request)
-	messages.info(request, f'您已退出登录 要想再用就他妈先登录')
+	messages.info(request, f'您已退出登录')
 	return redirect('login')
 
 

@@ -14,14 +14,15 @@
 		</div>
 	</fieldset>
 	<div class="form-group mb-2">
-		<button class="btn button-primary col-md-12" type="submit">登录</button>
+		<button class="w-100 btn btn-lg btn-primary col-md-12" type="submit">登录</button>
+	</div>
+	<div class="border-top pt-3 mt-3 mb-5">
+		<small class="text-muted">
+			第一次使用本站? 还没有账号? <a class="ml-2" href="{% url 'register' %}">注册</a>
+		</small>
 	</div>
 </form>
-<div class="border-top pt-3">
-	<small class="text-muted">
-		第一次使用本站? 还没有账号? <a class="ml-2" href="{% url 'register' %}">注册</a>
-	</small>
-</div>
+
 {% endblock auth_panel %}
 
 

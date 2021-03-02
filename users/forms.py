@@ -123,7 +123,7 @@ class UserAdmin(BaseUserAdmin):
 	fieldsets = (
 		(None, {'fields': ('invitation_code', 'password')}),
 		('Personal info', {'fields': ('first_name', 'last_name')}),
-		('Permissions', {'fields': ('is_admin',)}),
+		('Permissions', {'fields': ('is_admin','is_active', 'is_staff')}),
 	)
 
 	add_fieldsets = (

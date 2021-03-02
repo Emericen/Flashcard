@@ -4,7 +4,7 @@ from django.utils import timezone
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
 from django.utils.translation import ugettext_lazy as _
-from flashcards.models import Flashcard
+from flashcards.models import Collection
 
 
 
@@ -64,7 +64,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 	last_name = models.CharField(_('last name'), max_length=10, blank=True, default='')
 	first_name = models.CharField(_('first name'), max_length=10, blank=True, default='')
 
-	owned_flashcards = models.ManyToManyField(Flashcard, through='Ownership')
+	owned_collections = models.ManyToManyField(Collection, through='Ownership')
 	date_joined = models.DateTimeField(default=timezone.now)
 
 	def __str__(self):
@@ -76,11 +76,12 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class Ownership(models.Model):
 	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-	flashcard = models.ForeignKey(Flashcard, on_delete=models.CASCADE)
+	# flashcard = models.ForeignKey(Flashcard, on_delete=models.CASCADE)
+	collection = models.ForeignKey(Collection, default=None, on_delete=models.CASCADE)
 	date_added = models.DateTimeField(default=timezone.now)
 
 	def __str__(self):
-		return '(' + student + ',' + flashcard + ')'
+		return '(' + str(self.user) + ', ' + str(self.collection) + ')'
 
 
 
