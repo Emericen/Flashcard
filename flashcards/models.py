@@ -4,7 +4,7 @@ from django.utils import timezone
 
 
 class Collection(models.Model):
-	label = models.TextField()
+	label = models.CharField(max_length=20)
 	image = models.ImageField(default='default.jpg', upload_to='collection_thumbnails')
 
 	def __str__(self):
