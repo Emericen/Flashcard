@@ -5,7 +5,7 @@ from django.utils import timezone
 
 class Collection(models.Model):
 	label = models.TextField()
-	image = models.ImageField(default='default.jpg', upload_to='collection_thumbnail')
+	image = models.ImageField(default='default.jpg', upload_to='collection_thumbnails')
 
 	def __str__(self):
 		return self.label
