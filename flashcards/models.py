@@ -18,6 +18,7 @@ class Flashcard(models.Model):
 
 	collection = models.ForeignKey(Collection, default=None, on_delete=models.CASCADE)
 
+	
 
 	def __str__(self):
 		return f'{self.flashcard_type}: {self.front[:50]}'

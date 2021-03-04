@@ -80,6 +80,9 @@ class Ownership(models.Model):
 	collection = models.ForeignKey(Collection, default=None, on_delete=models.CASCADE)
 	date_added = models.DateTimeField(default=timezone.now)
 
+	current_index = models.IntegerField(default=0)
+
+
 	def __str__(self):
 		return '(' + str(self.user) + ', ' + str(self.collection) + ')'
 
