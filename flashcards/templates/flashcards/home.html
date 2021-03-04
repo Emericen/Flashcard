@@ -16,8 +16,8 @@
 <div class="album py-5">
 	<div class="container">
 		<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-			{% for collection in user.owned_collections.all %}
-			{# for collection in Collections #}
+			{# for collection in user.owned_collections.all #}
+			{% for collection in collections %}
 			<div class="col">
 				<div class="card shadow-sm">
 					<!-- <img class="card-img-top" src="{{collection.image.url}}" width="100%" height="225"> -->
@@ -25,9 +25,9 @@
 						<p class="card-text">{{ collection.label | truncatechars:35}}</p>
 						<div class="d-flex justify-content-between align-items-center">
 							<div class="btn-group">
-								<button type="button" class="btn btn-sm btn-outline-secondary">学习</button>
+								<a type="button" class="btn btn-sm btn-outline-secondary" href="{% url 'collection' collection.id %}">学习</a>
 								{% if user.is_staff %}
-									<button type="button" class="btn btn-sm btn-outline-secondary">修改</button>
+									<a type="button" class="btn btn-sm btn-outline-secondary">修改</a>
 								{% endif %}
 							</div>
 							<small class="text-muted">9 mins</small>
