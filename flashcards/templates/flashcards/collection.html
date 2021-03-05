@@ -2,7 +2,56 @@
 {% block home_content %}
 
 
+<section class="py-4 container">
+	<div class="col-lg-12 col-md-8 mx-auto">
+		<h1 class="fw-light">{{collection.label}}</h1>
+		<p class="lead">{{collection.description}}</p>
+
+		{% for knowledge in knowledges %}
+		<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+			{{knowledge.label}}
+		</button>
+
+		<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-xl">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">{{knowledge.label}}</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<ul class="list-group list-group-flush">
+							<li class="list-group-item">{{knowledge.description}}</li>
+							<li class="list-group-item">
+								<video class="col-12" controls disablePictureInPicture controlsList="nodownload"><source src="{{knowledge.tutorial_video.url}}" type="video/mp4">
+								</video>
+							</li>
+						</ul>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+						<button type="button" class="btn btn-primary">收藏</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		{% endfor %}
+		<p>
+			<a href="#" class="btn btn-primary my-2">开始练习</a>
+			<a href="{% url 'home' %}" class="btn btn-secondary my-2">返回主页</a>
+		</p>
+	</div>
+</section>
+
+
+
+
 <h1>{{collection.label}}</h1>
+
+{% for knowledge in knowledges %}
+<h2>{{knowledge.label}}</h2>
+{% endfor %}
+
 {% for flashcard in flashcards %}
 <h3>{{flashcard.front}}</h3>
 {% endfor %}

@@ -3,7 +3,6 @@ from django.core.exceptions import ValidationError
 from .models import User, Invitation
 from django.contrib.auth.forms import UserCreationForm, ReadOnlyPasswordHashField
 from django.contrib.auth.forms import AuthenticationForm, UsernameField
-from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.translation import gettext, gettext_lazy as _
 import sys
 
@@ -113,28 +112,6 @@ class UserChangeForm(forms.ModelForm):
 	def clean_password(self):
 		return self.initial["password"]
 
-
-
-class UserAdmin(BaseUserAdmin):
-	form = UserChangeForm
-	add_form = UserCreationForm
-	list_display = ('invitation_code', 'first_name', 'last_name', 'is_admin')
-	list_filter = ('is_admin',)
-	fieldsets = (
-		(None, {'fields': ('invitation_code', 'password')}),
-		('Personal info', {'fields': ('first_name', 'last_name')}),
-		('Permissions', {'fields': ('is_admin','is_active', 'is_staff')}),
-	)
-
-	add_fieldsets = (
-		(None, {
-			'classes': ('wide',),
-			'fields': ('invitation_code', 'first_name', 'last_name', 'password1', 'password2'),
-		}),
-	)
-	search_fields = ('invitation_code',)
-	ordering = ('invitation_code',)
-	filter_horizontal = ()
 
 
 
